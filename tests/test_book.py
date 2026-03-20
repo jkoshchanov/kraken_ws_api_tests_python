@@ -3,11 +3,13 @@
 import pytest
 from utils.ws_helpers import connect, subscribe, get_subscription_result, get_snapshot
 
+# Feature-level mark — run all book tests with: pytest -m book
+pytestmark = pytest.mark.book
+
 SYMBOL = "BTC/USD"
 DEPTH = 10
 
 
-@pytest.mark.book_01
 def test_book_subscription_succeeds():
     """
     TC-BOOK-01: SUCCESSFUL BOOK CHANNEL SUBSCRIPTION
@@ -26,7 +28,6 @@ def test_book_subscription_succeeds():
         ws.close()
 
 
-@pytest.mark.book_02
 def test_book_snapshot_fields(book_snapshot):
     """
     TC-BOOK-02: BOOK SNAPSHOT SCHEMA VALIDATION
@@ -51,7 +52,6 @@ def test_book_snapshot_fields(book_snapshot):
             assert isinstance(level["qty"], (int, float)), f"{side} qty must be numeric"
 
 
-@pytest.mark.book_03
 def test_book_not_crossed(book_snapshot):
     """
     TC-BOOK-03: ORDER BOOK NOT CROSSED
@@ -67,7 +67,6 @@ def test_book_not_crossed(book_snapshot):
     )
 
 
-@pytest.mark.book_04
 def test_book_positive_values(book_snapshot):
     """
     TC-BOOK-04: POSITIVE PRICES AND QUANTITIES
@@ -82,7 +81,6 @@ def test_book_positive_values(book_snapshot):
             assert level["qty"] > 0, f"Non-positive qty in {side}: {level['qty']}"
 
 
-@pytest.mark.book_05
 @pytest.mark.negative
 def test_book_invalid_symbol_returns_error():
     """
@@ -97,9 +95,9 @@ def test_book_invalid_symbol_returns_error():
     try:
         subscribe(ws, "book", symbol=["BANANA/USD"])
         result = get_subscription_result(ws)
-        assert result.get("success") is True, ( 
-            # this assertion is intentionally checking for success=True to demonstrate the negative test case, 
-            # setting line 100 to False boolean will pass the test.
+        assert result.get("success") is True, (
+            # this assertion is intentionally checking for success=True to demonstrate the negative test case,
+            # setting line above to False boolean will pass the test.
             f"[NEGATIVE TEST] Expected success=False for non-existent symbol 'BANANA/USD' "
             f"but got success={result.get('success')}. Server should reject unsupported symbols."
         )
