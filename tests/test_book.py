@@ -1,4 +1,4 @@
-"""Tests for the Kraken v2 WebSocket 'book' (order book) channel."""
+"""Tests for the Kraken v2 WebSocket 'book' (order book) channel/feature."""
 
 import pytest
 from utils.ws_helpers import connect, subscribe, get_subscription_result, get_snapshot
