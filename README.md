@@ -47,10 +47,10 @@ pytest -v --tb=short
 ### To generate HTML report localy
 
 ```bash
-pytest -v --tb=short --html=report.html --self-contained-html
+pytest -v --tb=short --html=reports/test_report.html --self-contained-html
 ```
 
-Open `report.html` in your browser to view results.
+Open `reports/test_report.html` in your browser to view results.
 
 ### To run tests by feature (channel)
 
