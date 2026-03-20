@@ -3,6 +3,11 @@
 Provides a thin layer over websocket-client for connecting, subscribing,
 and collecting messages. All logic lives here so test files stay focused
 on assertions.
+
+Note: I had not used the websocket-client library before this project.
+AI assistance was used to understand the connection lifecycle and message
+handling patterns (create_connection, recv loop, SSL options). All test
+logic and assertions were designed independently.
 """
 
 import json
