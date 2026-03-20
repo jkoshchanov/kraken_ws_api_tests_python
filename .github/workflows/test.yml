@@ -1,0 +1,25 @@
+# Note: AI assistance was used to structure this GitHub Actions workflow.
+# The YAML syntax, action versions, and step ordering were AI-assisted.
+# The decision to use CI/CD and what to run was made independently.
+
+name: Run Kraken WebSocket API Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build Docker image
+        run: docker build -t kraken_ws_api_tests_python .
+
+      - name: Run tests
+        run: docker run --rm kraken_ws_api_tests_python
