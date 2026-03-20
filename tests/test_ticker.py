@@ -9,7 +9,7 @@ pytestmark = pytest.mark.ticker
 SYMBOL = "BTC/USD"
 
 
-def test_ticker_subscription_succeeds():
+def test_TC_TICKER_01_subscription_succeeds():
     """
     TC-TICKER-01: SUCCESSFUL TICKER CHANNEL SUBSCRIPTION
     Given a valid symbol BTC/USD
@@ -27,7 +27,7 @@ def test_ticker_subscription_succeeds():
         ws.close()
 
 
-def test_ticker_snapshot_fields(ticker_snapshot):
+def test_TC_TICKER_02_snapshot_fields(ticker_snapshot):
     """
     TC-TICKER-02: TICKER SNAPSHOT SCHEMA VALIDATION
     Given I am subscribed to the ticker channel for BTC/USD
@@ -46,7 +46,7 @@ def test_ticker_snapshot_fields(ticker_snapshot):
         assert data[field] > 0, f"'{field}' must be positive, got {data[field]}"
 
 
-def test_ticker_bid_less_than_ask(ticker_snapshot):
+def test_TC_TICKER_03_bid_less_than_ask(ticker_snapshot):
     """
     TC-TICKER-03: BID IS LESS THAN ASK
     Given I am subscribed to the ticker channel for BTC/USD
@@ -60,7 +60,7 @@ def test_ticker_bid_less_than_ask(ticker_snapshot):
 
 
 @pytest.mark.negative
-def test_ticker_invalid_symbol_format_returns_error():
+def test_TC_TICKER_04_invalid_symbol_format_returns_error():
     """
     TC-TICKER-04: INVALID SYMBOL FORMAT RETURNS ERROR [NEGATIVE TEST]
     Given a symbol with no separator 'BTCUSD' (missing the slash)

@@ -1,4 +1,6 @@
 """Tests for the Kraken v2 WebSocket 'ohlc' channel/feature."""
+# OHLC stands for Open, High, Low, Close 
+# It's a standard way to summarize price activity over a time interval (called a "candle").
 
 import pytest
 from utils.ws_helpers import connect, subscribe, get_subscription_result, get_snapshot
@@ -10,7 +12,7 @@ SYMBOL = "BTC/USD"
 INTERVAL = 1  # minute(s)
 
 
-def test_ohlc_subscription_succeeds():
+def test_TC_OHLC_01_subscription_succeeds():
     """
     TC-OHLC-01: SUCCESSFUL OHLC CHANNEL SUBSCRIPTION
     Given a valid symbol BTC/USD and interval of 1 minute
@@ -28,7 +30,7 @@ def test_ohlc_subscription_succeeds():
         ws.close()
 
 
-def test_ohlc_snapshot_fields(ohlc_snapshot):
+def test_TC_OHLC_02_snapshot_fields(ohlc_snapshot):
     """
     TC-OHLC-02: OHLC SNAPSHOT SCHEMA VALIDATION
     Given I am subscribed to the ohlc channel for BTC/USD
@@ -44,7 +46,7 @@ def test_ohlc_snapshot_fields(ohlc_snapshot):
     assert data["symbol"] == SYMBOL
 
 
-def test_ohlc_candle_invariants(ohlc_snapshot):
+def test_TC_OHLC_03_candle_invariants(ohlc_snapshot):
     """
     TC-OHLC-03: OHLC CANDLE INVARIANTS
     Given I am subscribed to the ohlc channel for BTC/USD
@@ -68,7 +70,7 @@ def test_ohlc_candle_invariants(ohlc_snapshot):
 
 
 @pytest.mark.negative
-def test_ohlc_invalid_interval_returns_error():
+def test_TC_OHLC_04_invalid_interval_returns_error():
     """
     TC-OHLC-04: INVALID INTERVAL VALUE RETURNS ERROR [NEGATIVE TEST]
     Given an unsupported interval value of 999

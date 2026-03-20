@@ -10,7 +10,7 @@ SYMBOL = "BTC/USD"
 DEPTH = 10
 
 
-def test_book_subscription_succeeds():
+def test_TC_BOOK_01_subscription_succeeds():
     """
     TC-BOOK-01: SUCCESSFUL BOOK CHANNEL SUBSCRIPTION
     Given a valid symbol BTC/USD and depth of 10
@@ -28,7 +28,7 @@ def test_book_subscription_succeeds():
         ws.close()
 
 
-def test_book_snapshot_fields(book_snapshot):
+def test_TC_BOOK_02_snapshot_fields(book_snapshot):
     """
     TC-BOOK-02: BOOK SNAPSHOT SCHEMA VALIDATION
     Given I am subscribed to the book channel for BTC/USD
@@ -52,7 +52,7 @@ def test_book_snapshot_fields(book_snapshot):
             assert isinstance(level["qty"], (int, float)), f"{side} qty must be numeric"
 
 
-def test_book_not_crossed(book_snapshot):
+def test_TC_BOOK_03_not_crossed(book_snapshot):
     """
     TC-BOOK-03: ORDER BOOK NOT CROSSED
     Given I am subscribed to the book channel for BTC/USD
@@ -67,7 +67,7 @@ def test_book_not_crossed(book_snapshot):
     )
 
 
-def test_book_positive_values(book_snapshot):
+def test_TC_BOOK_04_positive_values(book_snapshot):
     """
     TC-BOOK-04: POSITIVE PRICES AND QUANTITIES
     Given I am subscribed to the book channel for BTC/USD
@@ -82,7 +82,7 @@ def test_book_positive_values(book_snapshot):
 
 
 @pytest.mark.negative
-def test_book_invalid_symbol_returns_error():
+def test_TC_BOOK_05_invalid_symbol_returns_error():
     """
     TC-BOOK-05: INVALID SYMBOL RETURNS ERROR [NEGATIVE TEST]
     Given a non-existent symbol 'BANANA/USD'
