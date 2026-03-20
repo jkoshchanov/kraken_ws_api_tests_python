@@ -52,11 +52,28 @@ pytest -v --tb=short --html=report.html --self-contained-html
 
 Open `report.html` in your browser to view results.
 
-### To run a specific test by mark
+### To run tests by feature (channel)
+
+Each channel has a feature-level mark applied to the entire test file:
 
 ```bash
-pytest -m book_01 -v        # run single test
-pytest -m negative -v       # run all negative tests
+pytest -m book -v           # run all Book channel tests
+pytest -m ticker -v         # run all Ticker channel tests
+pytest -m ohlc -v           # run all OHLC channel tests
+pytest -m trade -v          # run all Trade channel tests
+```
+
+### To run negative tests across all channels
+
+```bash
+pytest -m negative -v       # run all negative test cases across all channels
+```
+
+### To combine marks
+
+```bash
+pytest -m "book or ticker" -v          # run book and ticker tests together
+pytest -m "book and negative" -v       # run only book's negative test
 ```
 
 ## Project structure
@@ -68,7 +85,7 @@ pytest -m negative -v       # run all negative tests
 │   └── ws_helpers.py       # WebSocket connect/subscribe/collect utilities
 ├── tests/
 │   ├── test_book.py        # Book channel tests
-│   ├── test_ticker.py      # Ticker channel tests (coming soon)
+│   ├── test_ticker.py      # Ticker channel tests
 │   ├── test_ohlc.py        # OHLC channel tests (coming soon)
 │   └── test_trade.py       # Trade channel tests (coming soon)
 ├── conftest.py             # Shared pytest fixtures
