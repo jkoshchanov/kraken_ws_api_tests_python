@@ -86,8 +86,8 @@ pytest -m "book and negative" -v       # run only book's negative test
 ├── tests/
 │   ├── test_book.py        # Book channel tests
 │   ├── test_ticker.py      # Ticker channel tests
-│   ├── test_ohlc.py        # OHLC channel tests (coming soon)
-│   └── test_trade.py       # Trade channel tests (coming soon)
+│   ├── test_ohlc.py        # OHLC channel tests
+│   └── test_trade.py       # Trade channel tests
 ├── conftest.py             # Shared pytest fixtures
 ├── Dockerfile
 ├── pytest.ini              # Marks registration

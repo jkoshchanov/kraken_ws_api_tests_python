@@ -76,7 +76,7 @@ def test_TC_TRADE_04_wrong_symbol_type_returns_error():
     """
     ws = connect()
     try:
-        subscribe(ws, "trade", symbol="ETH/USD")
+        subscribe(ws, "trade", symbol="BTC/USD")
         result = get_subscription_result(ws)
         assert result.get("success") is False, (
             f"[NEGATIVE TEST] Expected success=False when symbol is passed as a string "

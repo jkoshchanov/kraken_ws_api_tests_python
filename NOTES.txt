@@ -1,0 +1,80 @@
+NOTES.txt — Test Strategy & Rationale
+======================================
+
+PROJECT OVERVIEW
+----------------
+This is a regression test suite for the Kraken WebSocket v2 public API.
+It covers 4 channels: Book, Ticker, OHLC, and Trade — 17 test cases in total.
+All tested channels are publicly accessible; no Kraken account is required.
+
+
+TEST STRATEGY
+-------------
+Each channel gets its own test file with 4 test cases:
+  - 1 subscription confirmation test (validates the server ack)
+  - 2 data validation tests (schema + business rule / invariant)
+  - 1 negative test (unique error scenario per channel)
+
+Test isolation: every test opens and closes its own WebSocket connection
+so there is no shared state between cases. Fixtures in conftest.py handle
+subscribe-and-receive for the data-driven tests.
+
+BTC/USD was chosen as the test symbol across all channels because it has
+the highest liquidity on Kraken, ensuring consistent message flow even
+during low-activity market hours.
+
+
+NEGATIVE TEST CASES
+-------------------
+Each channel has a unique negative scenario to avoid repetition:
+
+  TC-BOOK-05   — subscribe with a non-existent symbol (BANANA/USD)
+  TC-TICKER-04 — subscribe with a malformed symbol (BTCUSD, missing slash)
+  TC-OHLC-04   — subscribe with an unsupported interval value (999)
+  TC-TRADE-04  — pass symbol as a plain string instead of a list
+
+TC-BOOK-05 is intentionally left in a FAILING state. The assertion checks
+for success=True instead of success=False. This is deliberate — it
+demonstrates that the negative test correctly detected the server rejection,
+and a one-word fix (True → False) would make it pass. The failure is
+visible in the HTML report as a real-world example of a caught regression.
+
+
+TEST CASE NAMING
+----------------
+Test functions follow the pattern test_TC_<CHANNEL>_<NN>_<description>
+so that the TC number is visible directly in the pytest output and HTML report
+without needing to open the docstring.
+
+
+CHANNELS AND THEIR QUIRKS
+--------------------------
+Book   — sends a snapshot message (type: "snapshot") after subscription.
+Ticker — sends a snapshot message immediately after subscription.
+OHLC   — sends a snapshot of the current candle; requires an interval param.
+Trade  — does NOT send a snapshot; it streams update messages from the start.
+         get_first_channel_message() is used instead of get_snapshot() for this channel.
+
+
+AI ASSISTANCE DISCLOSURE (~30%)
+---------------------------------
+AI was used for the following parts of the project:
+
+  - utils/ws_helpers.py   — WebSocket lifecycle (connect, recv loop, SSL fix)
+  - conftest.py           — pytest fixture structure and session scoping advice
+  - Dockerfile            — FROM/COPY/ENTRYPOINT/CMD syntax
+  - .github/workflows/    — GitHub Actions YAML structure
+
+All test case design, scenario selection, channel-specific assertions,
+and the overall test architecture were written independently.
+
+The 30% figure reflects setup and tooling boilerplate, not the testing logic itself.
+
+
+DoS / RATE LIMITING COMPLIANCE
+-------------------------------
+All tests connect to the Kraken public WebSocket API. Each test opens one
+connection, performs a single subscription, reads a small number of messages,
+and closes the connection immediately. No test sends repeated requests in a loop
+or holds connections open for longer than necessary. The suite is not designed
+or intended for load testing.
