@@ -10,9 +10,10 @@ All tested channels are publicly accessible; no Kraken account is required.
 
 TEST STRATEGY
 -------------
-Each channel gets its own test file with 4 test cases:
+Each channel gets its own test file with 4 test cases (Book has 5):
   - 1 subscription confirmation test (validates the server ack)
-  - 2 data validation tests (schema + business rule / invariant)
+  - 2 data validation tests (schema + business rule / invariant);
+    Book has a third (positive prices and quantities)
   - 1 negative test (unique error scenario per channel)
 
 Test isolation: every test opens and closes its own WebSocket connection
@@ -33,11 +34,9 @@ Each channel has a unique negative scenario to avoid repetition:
   TC-OHLC-04   — subscribe with an unsupported interval value (999)
   TC-TRADE-04  — pass symbol as a plain string instead of a list
 
-TC-BOOK-05 is intentionally left in a FAILING state. The assertion checks
-for success=True instead of success=False. This is deliberate — it
-demonstrates that the negative test correctly detected the server rejection,
-and a one-word fix (True → False) would make it pass. The failure is
-visible in the HTML report as a real-world example of a caught regression.
+Each negative test asserts that the server rejects the request. For example,
+TC-BOOK-05 expects success=False and an error message that names the invalid
+symbol (Kraken replies "Currency pair not supported BANANA/USD").
 
 
 TEST CASE NAMING
