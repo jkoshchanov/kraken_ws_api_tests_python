@@ -95,9 +95,7 @@ def test_TC_BOOK_05_invalid_symbol_returns_error():
     try:
         subscribe(ws, "book", symbol=["BANANA/USD"])
         result = get_subscription_result(ws)
-        assert result.get("success") is True, (
-            # this assertion is intentionally checking for success=True to demonstrate the negative test case,
-            # setting line above to False boolean will pass the test.
+        assert result.get("success") is False, (
             f"[NEGATIVE TEST] Expected success=False for non-existent symbol 'BANANA/USD' "
             f"but got success={result.get('success')}. Server should reject unsupported symbols."
         )

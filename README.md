@@ -4,7 +4,7 @@ WebSocket API tests for Kraken public market data feeds
 ## Overview
 
 This project is a regression test suite written from scratch to validate the Kraken WebSocket v2 public API.
-It covers 4 channels — Book, Ticker, OHLC and Trade — using pytest and the websocket-client libary.
+It covers 4 channels — Book, Ticker, OHLC and Trade — using pytest and the websocket-client library.
 No Kraken account is needed as all tested channels are publicly accessible without authentication.
 
 The tests are designed to act as a regression suite, meaning they capture the current expected behavior
@@ -44,7 +44,7 @@ pip install -r requirements.txt
 pytest -v --tb=short
 ```
 
-### To generate HTML report localy
+### To generate HTML report locally
 
 ```bash
 pytest -v --tb=short --html=reports/test_report.html --self-contained-html
@@ -101,4 +101,4 @@ pytest -m "book and negative" -v       # run only book's negative test
 - BTC/USD was chosen as the test symbol due to its high liquidity and consistent activity
 - AI assistance was used for approximately 30% of this project (WebSocket lifecycle,
   pytest fixture structure, Dockerfile, and GitHub Actions YAML syntax)
-- All test case design, scenario selection and assertions were written independantly
+- All test case design, scenario selection and assertions were written independently
